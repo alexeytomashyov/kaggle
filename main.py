@@ -41,3 +41,5 @@ cols_with_missing = [col for col in train_data.columns
                      if train_data[col].isnull().any()]
 reduced_train_data = train_data.drop(cols_with_missing, axis=1)
 reduced_test_data = test_data.drop(cols_with_missing, axis=1)
+
+#%%
