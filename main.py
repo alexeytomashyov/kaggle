@@ -42,4 +42,24 @@ cols_with_missing = [col for col in train_data.columns
 reduced_train_data = train_data.drop(cols_with_missing, axis=1)
 reduced_test_data = test_data.drop(cols_with_missing, axis=1)
 
-#%%
+# %%
+# 2) Imputation of mean values
+from sklearn.impute import SimpleImputer
+my_imputer_mean = SimpleImputer()
+data_with_imputed_values = my_imputer_mean.fit_transform(train_data)
+
+# %%
+# 3) Imputation of predictions
+# make copy to avoid changing original data (when Imputing)
+new_data = train_data.copy()
+
+# make new columns indicating what will be imputed
+cols_with_missing = (col for col in new_data.columns 
+                     if new_data[col].isnull().any())
+for col in cols_with_missing:
+    new_data[col + '_was_missing'] = new_data[col].isnull()
+
+# Imputation
+my_imputer_predict = SimpleImputer()
+new_data = pd.DataFrame(my_imputer_predict.fit_transform(new_data))
+new_data.columns = train_data.columns
