@@ -15,17 +15,18 @@ features = ['LotArea', 'YearBuilt', '1stFlrSF', '2ndFlrSF', 'FullBath',
             'BedroomAbvGr', 'TotRmsAbvGrd']
 y = train_data.SalePrice
 X = train_data[features]
-# train_y = train_data.SalePrice
-# train_X = train_data[features]
-# test_y = test_data.SalePrice
-# test_X = test_data[features]
-train_X, val_X, train_y, val_y = train_test_split(X, y, random_state=1)
+# y_train = train_data.SalePrice
+# X_train = train_data[features]
+# y_test = test_data.SalePrice
+# X_test = test_data[features]
+X_train, X_val, y_train, y_val = train_test_split(X, y, train_size=0.7, 
+                                                  test_size=0.3, random_state=0)
 
 # Create and fit a model
 rf_model = RandomForestRegressor()
-rf_model.fit(train_X, train_y)
-rf_predictions = rf_model.predict(val_X)
-mae = mean_absolute_error(rf_predictions, val_y)
+rf_model.fit(X_train, y_train)
+rf_predictions = rf_model.predict(X_val)
+mae = mean_absolute_error(rf_predictions, y_val)
 
 print("MAE of random forest", mae)
 
@@ -46,7 +47,15 @@ reduced_test_data = test_data.drop(cols_with_missing, axis=1)
 # 2) Imputation of mean values
 from sklearn.impute import SimpleImputer
 my_imputer_mean = SimpleImputer()
-data_with_imputed_values = my_imputer_mean.fit_transform(train_data)
+data_with_imputed_values = my_imputer_mean.fit_transform(X_train)
+
+# from sklearn.impute import SimpleImputer
+
+# my_imputer = SimpleImputer()
+# imputed_X_train = my_imputer.fit_transform(X_train)
+# imputed_X_val = my_imputer.transform(X_val)
+# print("Mean Absolute Error from Imputation:")
+# print(score_dataset(imputed_X_train, imputed_X_test, y_train, y_test))
 
 # %%
 # 3) Imputation of predictions
