@@ -27,7 +27,7 @@ rf_model.fit(train_X, train_y)
 rf_predictions = rf_model.predict(val_X)
 mae = mean_absolute_error(rf_predictions, val_y)
 
-print("MAE of ramdom forest", mae)
+print("MAE of random forest", mae)
 
 # %%
 # Show columns with missing values
