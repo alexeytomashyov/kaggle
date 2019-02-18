@@ -28,21 +28,24 @@ X_train, X_test = X_train_ohe.align(X_test_ohe, join='left', axis=1)
 # %%
 # Making a pipeline
 from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import make_pipeline
 from sklearn.impute import SimpleImputer
 
-pipeline = make_pipeline(SimpleImputer(),
-                         GradientBoostingRegressor(loss='ls',
-                                                   n_estimators=500,
-                                                   learning_rate=0.1,
-                                                   max_depth=3))
+gb_pipeline = make_pipeline(SimpleImputer(),
+                            GradientBoostingRegressor(loss='ls',
+                                                      n_estimators=500,
+                                                      learning_rate=0.1,
+                                                      max_depth=3))
+lr_pipeline = make_pipeline(SimpleImputer(), LinearRegression())
 
 # %%
 # Cross-validation
 from sklearn.model_selection import cross_val_score
-scores = cross_val_score(pipeline, X_train, y,
-                         cv=4,
-                         scoring='neg_mean_absolute_error')
-print(scores.mean())
+gb_scores = cross_val_score(gb_pipeline, X_train, y, cv=4,
+                            scoring='neg_mean_absolute_error')
+lr_scores = cross_val_score(lr_pipeline, X_train, y, cv=4,
+                            scoring='neg_mean_absolute_error')
+print(gb_scores.mean(), lr_scores.mean(), sep='\n')
 
 #%%
