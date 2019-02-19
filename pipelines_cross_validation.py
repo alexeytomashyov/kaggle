@@ -1,8 +1,8 @@
 # %%
+# Data pre-processing
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-# Data pre-processing
 # Read data
 data = pd.read_csv('train.csv')
 test_data = pd.read_csv('test.csv')
